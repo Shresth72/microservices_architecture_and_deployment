@@ -26,7 +26,6 @@ pub struct TokenClaims {
 
 pub async fn GenerateSignature(payload: TokenClaims) -> Result<String, String> {
     dotenv().ok();
-
     let claims = TokenClaims {
         email: payload.email,
         id: payload.id,
