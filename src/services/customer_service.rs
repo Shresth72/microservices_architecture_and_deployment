@@ -29,7 +29,7 @@ impl CustomerService {
         let email = user_inputs.email;
         let entered_password = user_inputs.password;
 
-        let customer = CustomerRepository::FindCustomer(email).await;
+        let customer = CustomerRepository::find_customer(email).await;
 
         if customer.email == "".to_string() {
             return Err(AppError::new(
@@ -70,20 +70,26 @@ impl CustomerService {
             password: user_password,
             phone: phone.clone(),
         };
-        let customer = CustomerRepository::CreateCustomer(customer_input).await;
+        let customer = CustomerRepository::create_customer(customer_input).await;
 
         let token = GenerateSignature(TokenClaims {
             email: customer.email,
             id: customer.id,
         }).await.unwrap();
 
-        Ok(token)
+        match FormateData(token) {
+            Ok(token_data) => Ok(token_data),
+            Err(_) => Err("Failed to formate data".to_string()),
+        }
     }
 
     pub async fn new_address(user_inputs: Address) -> Result<Address, String> {
-        let address_result = CustomerRepository::CreateAddress(user_inputs).await;
+        let address_result = CustomerRepository::create_address(user_inputs).await;
 
-        Ok(address_result)
+        match FormateData(address_result) {
+            Ok(address_data) => Ok(address_data),
+            Err(_) => Err("Failed to formate data".to_string()),
+        }
     }
 }
 

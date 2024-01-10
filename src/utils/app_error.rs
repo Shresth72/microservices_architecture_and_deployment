@@ -35,7 +35,7 @@ pub struct APIError {
 }
 
 impl APIError {
-    pub fn new(self, message: String) -> Self {
+    pub fn new(message: String) -> Self {
         APIError {
             app_error: AppError {
                 message,

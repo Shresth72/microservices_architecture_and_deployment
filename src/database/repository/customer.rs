@@ -33,7 +33,7 @@ pub struct CustomerInput {
 }
 
 impl CustomerRepository {
-    pub async fn CreateCustomer(input: CustomerInput) -> Self {
+    pub async fn create_customer(input: CustomerInput) -> Self {
         CustomerRepository {
             id: nanoid!(),
             email: input.email,
@@ -46,11 +46,11 @@ impl CustomerRepository {
         }
     }
 
-    pub async fn CreateAddress(input: Address) -> Address {
+    pub async fn create_address(input: Address) -> Address {
         input
     }
 
-    pub async fn FindCustomer(email: String) -> Self {
+    pub async fn find_customer(email: String) -> Self {
         // TODO: Find customer from database
         CustomerRepository {
             id: nanoid!(),
@@ -64,15 +64,15 @@ impl CustomerRepository {
         }
     }
 
-    pub async fn FindCustomerById(self, id: String) {
+    pub async fn find_customer_by_id(self, id: String) {
         // TODO: Find customer from database
     }
 
-    pub async fn FindWishlist(&mut self, product: ProductRepository) -> &mut Self {
+    pub async fn find_wishlist(&mut self, product: ProductRepository) -> &mut Self {
         self
     }
 
-    pub async fn AddWishlistItem(
+    pub async fn add_wishlist_item(
         &mut self,
         customerId: String,
         product: ProductRepository,

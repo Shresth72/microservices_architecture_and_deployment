@@ -15,22 +15,37 @@ pub struct OrderRepository {
 }
 
 impl OrderRepository {
-    pub fn new() -> Self {
+    pub async fn orders(self, customer_id: String) -> Vec<OrderRepository> {
+        let orders = vec![
+            OrderRepository {
+                order_id: "".to_string(),
+                customer_id: customer_id.clone(),
+                amount: 0.0,
+                status: "".to_string(),
+                txn_id: "".to_string(),
+                items: Vec::new(),
+            },
+            OrderRepository {
+                order_id: "".to_string(),
+                customer_id: customer_id,
+                amount: 0.0,
+                status: "".to_string(),
+                txn_id: "".to_string(),
+                items: Vec::new(),
+            },
+        ];
+        
+        orders
+    }
+
+    pub async fn create_new_order(self, customer_id: String, txn_id: String) -> Self {
         OrderRepository {
-            order_id: String::new(),
-            customer_id: String::new(),
+            order_id: "".to_string(),
+            customer_id,
             amount: 0.0,
-            status: String::new(),
-            txn_id: String::new(),
+            status: "".to_string(),
+            txn_id,
             items: Vec::new(),
         }
-    }
-
-    async fn Orders(&self, customer_id: String) {
-        // TODO: Find orders from database
-    }
-
-    async fn OrderById(&self, customer_id: String, txn_id: String) {
-        // TODO: Find order by id from database
     }
 }
