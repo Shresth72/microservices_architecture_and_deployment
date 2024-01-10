@@ -1,9 +1,9 @@
+use super::app_error::{AppError, StatusCode};
 use bcrypt::{hash, verify, DEFAULT_COST};
 use dotenv::dotenv;
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 use std::env::var;
-use super::app_error::{AppError, StatusCode};
 
 pub async fn GeneratePassword(password: String) -> String {
     hash(password, DEFAULT_COST).unwrap()
@@ -58,4 +58,15 @@ pub async fn ValidateSignature(token: String) -> Result<bool, AppError> {
     .claims;
 
     Ok(true)
+}
+
+pub fn FormateData<T>(data: T) -> Result<T, AppError>  {
+    match data {
+        data => Ok(data),
+        _ => Err(AppError::new(
+            "Data not found".to_string(),
+            StatusCode::NotFound,
+            "Not Found".to_string(),
+        )),
+    }
 }

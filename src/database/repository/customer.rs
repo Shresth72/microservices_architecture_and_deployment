@@ -1,3 +1,5 @@
+use std::ops::Add;
+
 use crate::product::ProductRepository;
 use nanoid::nanoid;
 
@@ -33,28 +35,37 @@ pub struct CustomerInput {
 }
 
 impl CustomerRepository {
-    pub async fn CreateCustomer(&mut self, input: CustomerInput) -> &mut Self {
-        self.id = nanoid!();
-        self.email = input.email;
-        self.password = input.password;
-        self.phone = input.phone;
-        self.salt = input.salt;
-
-        // TODO: Push to database
-
-        self
+    pub async fn CreateCustomer(input: CustomerInput) -> Self {
+        CustomerRepository {
+            id: nanoid!(),
+            email: input.email,
+            password: input.password,
+            salt: input.salt,
+            phone: input.phone,
+            address: Vec::new(),
+            cart: Vec::new(),
+            wishlist: Vec::new(),
+            orders: Vec::new(),
+        }
     }
 
-    pub async fn CreateAddress(&mut self, input: Address) -> &mut Self {
-        self.address.push(input);
+    pub async fn CreateAddress(input: Address) {
 
-        // TODO: Push to database
-
-        self
     }
 
-    pub async fn FindCustomer(self, email: String) {
+    pub async fn FindCustomer(email: String) -> Self {
         // TODO: Find customer from database
+        CustomerRepository {
+            id: nanoid!(),
+            email,
+            password: "".to_string(),
+            salt: "".to_string(),
+            phone: "".to_string(),
+            address: Vec::new(),
+            cart: Vec::new(),
+            wishlist: Vec::new(),
+            orders: Vec::new(),
+        }
     }
 
     pub async fn FindCustomerById(self, id: String) {
