@@ -35,13 +35,17 @@ pub struct APIError {
 }
 
 impl APIError {
-    pub fn new(&mut self, message: String) -> &mut Self {
-        self.app_error.message = message;
-        self.app_error.status_code = StatusCode::InternalServerError;
-        self.app_error.description = "Internal Server Error".to_string();
-        self.app_error.is_operational = Some(true);
-
-        self
+    pub fn new(self, message: String) -> Self {
+        APIError {
+            app_error: AppError {
+                message,
+                status_code: StatusCode::InternalServerError,
+                description: "Internal Server Error".to_string(),
+                is_operational: Some(false),
+                error_stack: Some(false),
+                logging_error_message: None,
+            },
+        }
     }
 }
 

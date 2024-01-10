@@ -19,7 +19,6 @@ pub struct CustomerRepository {
     pub id: String,
     pub email: String,    //
     pub password: String, //
-    pub salt: String,     //
     pub phone: String,    //
     pub address: Vec<Address>,
     pub cart: Vec<CartItem>,
@@ -31,7 +30,6 @@ pub struct CustomerInput {
     pub email: String,
     pub password: String,
     pub phone: String,
-    pub salt: String,
 }
 
 impl CustomerRepository {
@@ -40,7 +38,6 @@ impl CustomerRepository {
             id: nanoid!(),
             email: input.email,
             password: input.password,
-            salt: input.salt,
             phone: input.phone,
             address: Vec::new(),
             cart: Vec::new(),
@@ -49,8 +46,8 @@ impl CustomerRepository {
         }
     }
 
-    pub async fn CreateAddress(input: Address) {
-
+    pub async fn CreateAddress(input: Address) -> Address {
+        input
     }
 
     pub async fn FindCustomer(email: String) -> Self {
@@ -59,7 +56,6 @@ impl CustomerRepository {
             id: nanoid!(),
             email,
             password: "".to_string(),
-            salt: "".to_string(),
             phone: "".to_string(),
             address: Vec::new(),
             cart: Vec::new(),
