@@ -1,5 +1,5 @@
-mod database;
-use database::repository::*;
+mod models;
+use models::repository::*;
 
 mod utils;
 use utils::*;
@@ -7,4 +7,6 @@ use utils::*;
 mod services;
 use services::*;
 
-fn main() {}
+fn main() {
+    let h = 3;
+}

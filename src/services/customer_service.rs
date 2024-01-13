@@ -1,12 +1,17 @@
 use crate::customer::{CustomerRepository, Address};
-use crate::database::repository::customer::CustomerInput;
+use crate::models::repository::customer::CustomerInput;
 use crate::index::{FormateData, GeneratePassword, ValidatePassword, GenerateSignature};
 use crate::app_error::{APIError, BadRequestError};
 use crate::utils::app_error::{AppError, StatusCode};
 use crate::utils::index::TokenClaims;
 
+use aws_sdk_dynamodb::{Client, config};
+use aws_config::SdkConfig;
+use std::collections::HashMap;
+
 pub struct CustomerService {
-    pub repository: CustomerRepository,
+    pub client: Client,
+    pub table_name: String,
 }
 
 pub struct SignInUserInputs {
@@ -21,17 +26,21 @@ pub struct SignUpUserInputs {
 }
 
 impl CustomerService {
-    pub fn new(repository: CustomerRepository) -> CustomerService {
-        CustomerService { repository }
+    pub async fn init(config: SdkConfig, table_name: String) -> CustomerService {
+        let client = Client::new(&config);
+        CustomerService {
+            client,
+            table_name,
+        }
     }
 
-    pub async fn sign_in(user_inputs: SignInUserInputs) -> Result<String, AppError> {
+    pub async fn sign_in(&self, user_inputs: SignInUserInputs) -> Result<String, AppError> {
         let email = user_inputs.email;
         let entered_password = user_inputs.password;
 
-        let customer = CustomerRepository::find_customer(email).await;
+        let customer = CustomerRepository::find_customer(&self.client, &self.table_name, true, email).await;
 
-        if customer.email == "".to_string() {
+        if customer.is_err() {
             return Err(AppError::new(
                 "Email not found".to_string(),
                 StatusCode::NotFound,
@@ -39,11 +48,16 @@ impl CustomerService {
             ));
         }
 
-        let is_valid = ValidatePassword(entered_password, customer.password).await;
+        let customer = customer.ok().unwrap();
+        let email = customer.email;
+        let hashed_password = customer.password;
+        let id = customer.id;
+
+        let is_valid = ValidatePassword(entered_password, hashed_password).await;
         if is_valid {
             let payload: TokenClaims = TokenClaims {
-                email: customer.email,
-                id: customer.id,
+                email,
+                id,
             };
 
             let token: String = GenerateSignature(payload).await.unwrap();

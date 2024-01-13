@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use rocket::form::Form;
 use rocket::futures::FutureExt;
 
-use crate::database::repository::product;
+use crate::models::repository::product;
 use crate::product::{ProductRepository, ProductInput};
 use crate::app_error::APIError;
 use crate::utils::index::FormateData;
