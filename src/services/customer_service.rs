@@ -49,15 +49,12 @@ impl CustomerService {
         }
 
         let customer = customer.ok().unwrap();
-        let email = customer.email;
-        let hashed_password = customer.password;
-        let id = customer.id;
 
-        let is_valid = ValidatePassword(entered_password, hashed_password).await;
+        let is_valid = ValidatePassword(entered_password, customer.password).await;
         if is_valid {
             let payload: TokenClaims = TokenClaims {
-                email,
-                id,
+                email: customer.email,
+                id: customer.id,
             };
 
             let token: String = GenerateSignature(payload).await.unwrap();
@@ -72,7 +69,7 @@ impl CustomerService {
         ))
     }
 
-    pub async fn sign_up(user_inputs: SignUpUserInputs) -> Result<String, String> {
+    pub async fn sign_up(&self, user_inputs: SignUpUserInputs) -> Result<String, String> {
         let email = user_inputs.email;
         let password = user_inputs.password;
         let phone = user_inputs.phone;
@@ -84,7 +81,8 @@ impl CustomerService {
             password: user_password,
             phone: phone.clone(),
         };
-        let customer = CustomerRepository::create_customer(customer_input).await;
+        let customer = CustomerRepository::create_customer(&self.client, &self.table_name, customer_input).await;
+        let customer = customer.ok().unwrap();
 
         let token = GenerateSignature(TokenClaims {
             email: customer.email,
@@ -97,12 +95,21 @@ impl CustomerService {
         }
     }
 
-    pub async fn new_address(user_inputs: Address) -> Result<Address, String> {
-        let address_result = CustomerRepository::create_address(user_inputs).await;
+    pub async fn new_address(&self, id: String, user_inputs: Address) -> Result<Address, String> {
+        let address_result = CustomerRepository::create_address(&self.client, &self.table_name, &id, user_inputs).await;
 
-        match FormateData(address_result) {
-            Ok(address_data) => Ok(address_data),
-            Err(_) => Err("Failed to formate data".to_string()),
+        match address_result {
+            Ok(address) => Ok(address),
+            Err(_) => Err("Failed to create address".to_string()),
+        }
+    }
+
+    pub async fn get_profile(&self, id: String) -> Result<CustomerRepository, String> {
+        let customer = CustomerRepository::find_customer_by_id(&self.client, &self.table_name, &id).await;
+
+        match customer {
+            Ok(customer) => Ok(customer),
+            Err(_) => Err("Failed to get customer".to_string()),
         }
     }
 }
