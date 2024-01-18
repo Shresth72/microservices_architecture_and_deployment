@@ -7,6 +7,9 @@ use utils::*;
 mod services;
 use services::*;
 
+mod schema;
+use self::schema::customer::dsl::*;
+
 fn main() {
     let h = 3;
 }

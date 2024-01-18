@@ -1,24 +1,29 @@
 use nanoid::nanoid;
+use serde::Deserialize;
+use diesel::prelude::*;
+use super::super::super::schema::product;
 
+#[derive(Debug, Clone, Deserialize, Queryable, Insertable)]
+#[diesel(table_name = product)]
 pub struct ProductRepository {
     pub id: String,
     pub name: String,
-    pub desc: String,
+    pub description: String,
     pub banner: String,
     pub type_: String,
-    pub unit: u32,
-    pub price: f32,
+    pub unit: i32,
+    pub price: f64,
     pub available: bool,
     pub suplier: String,
 }
 
 pub struct ProductInput {
     pub name: String,
-    pub desc: String,
+    pub description: String,
     pub banner: String,
     pub type_: String,
-    pub unit: u32,
-    pub price: f32,
+    pub unit: i32,
+    pub price: f64,
     pub available: bool,
     pub suplier: String,
 }
@@ -27,7 +32,7 @@ impl ProductRepository {
     pub fn create_product(&mut self, input: ProductInput) -> &mut Self {
         self.id = nanoid!();
         self.name = input.name;
-        self.desc = input.desc;
+        self.description = input.description;
         self.banner = input.banner;
         self.type_ = input.type_;
         self.unit = input.unit;
@@ -45,7 +50,7 @@ impl ProductRepository {
             ProductRepository {
                 id: nanoid!(),
                 name: "Product 1".to_string(),
-                desc: "Product 1 description".to_string(),
+                description: "Product 1 description".to_string(),
                 banner: "Product 1 banner".to_string(),
                 type_: "Product 1 type".to_string(),
                 unit: 1,
@@ -56,7 +61,7 @@ impl ProductRepository {
             ProductRepository {
                 id: nanoid!(),
                 name: "Product 2".to_string(),
-                desc: "Product 2 description".to_string(),
+                description: "Product 2 description".to_string(),
                 banner: "Product 2 banner".to_string(),
                 type_: "Product 2 type".to_string(),
                 unit: 2,
@@ -67,7 +72,7 @@ impl ProductRepository {
             ProductRepository {
                 id: nanoid!(),
                 name: "Product 3".to_string(),
-                desc: "Product 3 description".to_string(),
+                description: "Product 3 description".to_string(),
                 banner: "Product 3 banner".to_string(),
                 type_: "Product 3 type".to_string(),
                 unit: 3,
@@ -84,7 +89,7 @@ impl ProductRepository {
         let product = ProductRepository {
             id: nanoid!(),
             name: "Product 1".to_string(),
-            desc: "Product 1 description".to_string(),
+            description: "Product 1 description".to_string(),
             banner: "Product 1 banner".to_string(),
             type_: "Product 1 type".to_string(),
             unit: 1,
@@ -101,7 +106,7 @@ impl ProductRepository {
             ProductRepository {
                 id: nanoid!(),
                 name: "Product 1".to_string(),
-                desc: "Product 1 description".to_string(),
+                description: "Product 1 description".to_string(),
                 banner: "Product 1 banner".to_string(),
                 type_: "Product 1 type".to_string(),
                 unit: 1,
@@ -112,7 +117,7 @@ impl ProductRepository {
             ProductRepository {
                 id: nanoid!(),
                 name: "Product 2".to_string(),
-                desc: "Product 2 description".to_string(),
+                description: "Product 2 description".to_string(),
                 banner: "Product 2 banner".to_string(),
                 type_: "Product 2 type".to_string(),
                 unit: 2,
@@ -123,7 +128,7 @@ impl ProductRepository {
             ProductRepository {
                 id: nanoid!(),
                 name: "Product 3".to_string(),
-                desc: "Product 3 description".to_string(),
+                description: "Product 3 description".to_string(),
                 banner: "Product 3 banner".to_string(),
                 type_: "Product 3 type".to_string(),
                 unit: 3,
@@ -141,7 +146,7 @@ impl ProductRepository {
             ProductRepository {
                 id: nanoid!(),
                 name: "Product 1".to_string(),
-                desc: "Product 1 description".to_string(),
+                description: "Product 1 description".to_string(),
                 banner: "Product 1 banner".to_string(),
                 type_: "Product 1 type".to_string(),
                 unit: 1,
@@ -152,7 +157,7 @@ impl ProductRepository {
             ProductRepository {
                 id: nanoid!(),
                 name: "Product 2".to_string(),
-                desc: "Product 2 description".to_string(),
+                description: "Product 2 description".to_string(),
                 banner: "Product 2 banner".to_string(),
                 type_: "Product 2 type".to_string(),
                 unit: 2,
@@ -163,7 +168,7 @@ impl ProductRepository {
             ProductRepository {
                 id: nanoid!(),
                 name: "Product 3".to_string(),
-                desc: "Product 3 description".to_string(),
+                description: "Product 3 description".to_string(),
                 banner: "Product 3 banner".to_string(),
                 type_: "Product 3 type".to_string(),
                 unit: 3,

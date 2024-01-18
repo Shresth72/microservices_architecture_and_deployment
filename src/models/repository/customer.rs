@@ -1,10 +1,14 @@
-use std::{ops::Add, error::Error};
-
-use crate::{product::ProductRepository, services::customer_service::CustomerService, utils::app_error::{AppError, StatusCode}};
-use aws_sdk_dynamodb::{Client, types::{AttributeValue, error::{ReplicaNotFoundException, ResourceNotFoundException}}};
+use std::error::Error;
+use crate::product::ProductRepository;
+use aws_sdk_dynamodb::{Client, types::AttributeValue};
+use diesel::{deserialize::Queryable, prelude::Insertable};
 use nanoid::nanoid;
 use maplit::hashmap;
+use serde::Deserialize;
+use diesel::prelude::*;
+use super::super::super::schema::customer;
 
+#[derive(Debug, Clone, Deserialize)]
 pub struct Address {
     pub street: String,
     pub city: String,
@@ -12,16 +16,19 @@ pub struct Address {
     pub country: String,
 }
 
+#[derive(Debug, Clone, Deserialize)]
 pub struct CartItem {
     pub product: ProductRepository,
     pub unit: u32,
 }
 
+#[derive(Queryable, Insertable, Deserialize, Debug, Clone)]
+#[diesel(table_name = customer)]
 pub struct CustomerRepository {
     pub id: String,
-    pub email: String,    //
-    pub password: String, //
-    pub phone: String,    //
+    pub email: String,
+    pub password: String,
+    pub phone: String,   
     pub address: Vec<Address>,
     pub cart: Vec<CartItem>,
     pub wishlist: Vec<ProductRepository>,

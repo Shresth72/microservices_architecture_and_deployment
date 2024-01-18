@@ -1,4 +1,4 @@
-use crate::{customer::CustomerRepository, product::ProductRepository};
+use crate::product::ProductRepository;
 
 pub struct OrderItem {
     pub product: ProductRepository,
