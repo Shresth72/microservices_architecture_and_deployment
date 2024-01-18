@@ -1,5 +1,4 @@
-use crate::customer::{CustomerRepository, Address};
-use crate::models::repository::customer::CustomerInput;
+use crate::models::repository::customer::{CustomerInput, CustomerRepository, Address};
 use crate::index::{FormateData, GeneratePassword, ValidatePassword, GenerateSignature};
 use crate::app_error::{APIError, BadRequestError};
 use crate::utils::app_error::{AppError, StatusCode};

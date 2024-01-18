@@ -8,7 +8,7 @@ pub struct OrderItem {
 pub struct OrderRepository {
     order_id: String,
     customer_id: String,
-    amount: f32,
+    amount: f64,
     status: String,
     txn_id: String,
     items: Vec<OrderItem>,

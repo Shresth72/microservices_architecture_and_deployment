@@ -18,6 +18,21 @@ diesel::table! {
 }
 
 diesel::table! {
+    order (order_id) {
+        #[max_length = 255]
+        order_id -> Varchar,
+        #[max_length = 255]
+        customer_id -> Varchar,
+        amount -> Float8,
+        #[max_length = 255]
+        status -> Varchar,
+        #[max_length = 255]
+        txn_id -> Varchar,
+        items -> Nullable<Array<Nullable<Json>>>,
+    }
+}
+
+diesel::table! {
     product (id) {
         #[max_length = 255]
         id -> Varchar,
@@ -37,7 +52,10 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(order -> customer (customer_id));
+
 diesel::allow_tables_to_appear_in_same_query!(
     customer,
+    order,
     product,
 );

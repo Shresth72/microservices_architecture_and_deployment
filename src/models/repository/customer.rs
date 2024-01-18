@@ -1,7 +1,6 @@
 use std::error::Error;
 use crate::product::ProductRepository;
 use aws_sdk_dynamodb::{Client, types::AttributeValue};
-use diesel::{deserialize::Queryable, prelude::Insertable};
 use nanoid::nanoid;
 use maplit::hashmap;
 use serde::Deserialize;
