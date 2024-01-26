@@ -1,6 +1,5 @@
 # AWS Deployment Process
 
-
 **AWS Management Console**
 -
 - AWS Management Console
