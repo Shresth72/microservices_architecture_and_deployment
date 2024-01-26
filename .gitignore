@@ -11,3 +11,4 @@ customer/node_modules
 /shopping/app_error.log
 /shopping/package-lock.json
 /rust
+/customer/rpc_example
