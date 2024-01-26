@@ -1,5 +1,7 @@
 # Microservices Architecture in nodeJs / rust (rocket.rs)
 
+**Initial Implementation**
+-
 - Multiple services that communicate through message broker (Apache Kafka / RabbitMQ)
 - Nginx to act as reverse proxy for managing request APIs from client
 - Dockerized Images for database, services and reverse proxy to make it easily deployable on cloud
