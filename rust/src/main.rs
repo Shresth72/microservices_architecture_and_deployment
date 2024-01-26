@@ -10,6 +10,8 @@ use services::*;
 mod schema;
 use self::schema::customer::dsl::*;
 
+mod database;
+
 fn main() {
     let h = 3;
 }

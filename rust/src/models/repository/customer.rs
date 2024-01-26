@@ -1,13 +1,18 @@
 use std::error::Error;
 use crate::product::ProductRepository;
 use aws_sdk_dynamodb::{Client, types::AttributeValue};
+use diesel::pg::Pg;
+use diesel::serialize::ToSql;
 use nanoid::nanoid;
 use maplit::hashmap;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use diesel::prelude::*;
-use super::super::super::schema::customer;
+use crate::schema::customer;
+use crate::database::establish_connection;
 
-#[derive(Debug, Clone, Deserialize)]
+type pg_address = dyn ToSql<diesel::sql_types::Nullable<diesel::sql_types::Array<diesel::sql_types::Nullable<diesel::sql_types::Json>>>, Pg>;
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Address {
     pub street: String,
     pub city: String,
@@ -28,7 +33,7 @@ pub struct CustomerRepository {
     pub email: String,
     pub password: String,
     pub phone: String,   
-    pub address: Vec<Address>,
+    pub address: Vec<diesel_json::Json<Address>>,
     pub cart: Vec<CartItem>,
     pub wishlist: Vec<ProductRepository>,
     pub orders: Vec<String>,
@@ -47,7 +52,7 @@ impl CustomerRepository {
         let password = input.password;
         let phone = input.phone;
 
-        let customer = CustomerRepository {
+        let output_customer = CustomerRepository {
             id,
             email,
             password,
@@ -58,7 +63,7 @@ impl CustomerRepository {
             orders: Vec::new(),
         };
 
-        customer
+        output_customer
     }
 
     pub async fn create_address(client: &Client, table_name: &str, id: &str, input: Address) -> Result<Address, Box<dyn Error>> {
@@ -91,6 +96,29 @@ impl CustomerRepository {
         }
 
         Err(Box::from("Failed to create address"))
+    }
+
+    pub fn create_address_ds(id: &str, input: Address) {
+        use crate::schema::customer::dsl::*;
+        let connection = &mut establish_connection();
+
+        // let input_address = vec![serde_json::json!({
+        //     "street": input.street,
+        //     "city": input.city,
+        //     "postal_code": input.postal_code,
+        //     "country": input.country,
+        // })];
+
+        // if let Ok(val_address) = serde_json::from_value::<Address>(input_address[0].clone()) {
+        //     diesel::update(customer.filter(id.eq(id)))
+        //         .set(address.eq(input_address))
+        //         .execute(connection)
+        //         .expect("Error updating customer");
+        // } else {
+        //     println!("Error, wrong input");
+        // }
+
+
     }
 
     pub async fn create_customer(client: &Client, table_name: &str, input: CustomerInput) -> Result<Self, Box<dyn Error>> {
