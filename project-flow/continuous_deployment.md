@@ -38,3 +38,28 @@ run: |
     npm test
 ```
 - Set new branch rules
+- Continuous Deployment Setup complete for dev environment
+
+**Next For Production Environment**
+-
+- Go to AWS for setting up QA env
+- Identidy Access Management Dashboard
+- Users -> Add User
+- Set Access Key for Id and Secret Key
+- Go to Attach existing policies directly
+- Set AdministrationAccess-AWSElasticBeanstalk
+- Create User
+
+**Set Elastic Beanstalk Access For Github Actions**
+- 
+- Set Repository Actions Secrets -> AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY
+- Create Application in ElasticBeanstalk
+- Choose Sample Application and Create Application
+
+- Create a new NodeJs action workflow in Github Actions
+- Set env vars and continuous deployment with AWS
+
+- Workflow will upload zip on its own, when a new commit or merge is done.
+
+- Now, setup a new web server environment on Elastic Beanstalk
+- 
