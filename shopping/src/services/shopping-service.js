@@ -1,5 +1,5 @@
 const { ShoppingRepository } = require("../database");
-const { FormateData } = require("../utils");
+const { FormateData, RPCRequest } = require("../utils");
 
 // All Business logic will be here
 class ShoppingService {
@@ -39,6 +39,51 @@ class ShoppingService {
   async getCart(_id) {
     try {
       return this.repository.Cart(_id);
+    } catch (err) {
+      throw new APIError("Data Not found", err);
+    }
+  }
+
+  // Wishlist
+  async addToWishlist(customerId, product_id) {
+    try {
+      return await this.repository.ManageWishlist(
+        customerId,
+        product_id,
+        false
+      );
+    } catch (err) {
+      throw new APIError("Cannot add to wishlist", err);
+    }
+  }
+
+  async removeFromWishlist(customerId, product_id) {
+    try {
+      return await this.repository.ManageWishlist(customerId, product_id, true);
+    } catch (err) {
+      throw new APIError("Cannot remove from wishlist", err);
+    }
+  }
+
+  async getWishlist(customerId) {
+    try {
+      // Perform RPC call to get product details
+      const { products } = await this.repository.getWishlistByCustomerId(
+        customerId
+      );
+
+      if (Array.isArray(products)) {
+        const ids = products.map(({ _id }) => _id);
+        const productResponse = await RPCRequest("PRODUCT_RPC", {
+          type: "VIEW_PRODUCTS",
+          data: ids
+        });
+
+        if (productResponse) {
+          return productResponse;
+        } 
+        return FormateData({ error: "No products found" });
+      }
     } catch (err) {
       throw new APIError("Data Not found", err);
     }

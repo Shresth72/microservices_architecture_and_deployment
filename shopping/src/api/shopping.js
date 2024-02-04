@@ -4,7 +4,7 @@ const { PublishMessage, SubscribeMessage } = require("../utils");
 
 module.exports = (app) => {
   const service = new ShoppingService();
-  
+
   SubscribeMessage(channel, service);
 
   // Cart
@@ -40,6 +40,29 @@ module.exports = (app) => {
     } catch (err) {
       next(err);
     }
+  });
+
+  // Wishlist
+  app.post("/wishlist", UserAuth, async (req, res, next) => {
+    const { _id } = req.user;
+    const { product_id } = req.body;
+
+    const data = await service.addToWishlist(_id, product_id);
+    return res.status(200).json(data);
+  });
+
+  app.get("/wishlist", UserAuth, async (req, res, next) => {
+    const { _id } = req.user;
+    const data = await service.getWishlist(_id);
+    return res.status(200).json(data);
+  });
+
+  app.delete("/wishlist/:id", UserAuth, async (req, res, next) => {
+    const { _id } = req.user;
+    const product_id = req.params.id;
+
+    const data = await service.removeFromWishlist(_id, product_id);
+    return res.status(200).json(data);
   });
 
   // Orders
