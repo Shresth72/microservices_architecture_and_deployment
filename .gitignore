@@ -1,6 +1,7 @@
 customer/app_error.log
 customer/node_modules
 /customer/.env
+/customer/package-lock.json
 /products/node_modules
 /products/.env
 /products/app_error.log

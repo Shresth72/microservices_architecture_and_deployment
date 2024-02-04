@@ -23,17 +23,17 @@ jobs:
       - name: Test Customer Service
         working-directory: ./customer
         run: | # npm ci needs lock files
-          npm ci 
+          npm i 
           npm test
 
       - name: Test Products Service
         working-directory: ./products
         run: |
-          npm ci
+          npm i
           npm test
 
       - name: Test Shopping Service
         working-directory: ./shopping
         run: |
-          npm ci
+          npm i
           npm test
