@@ -1,7 +1,7 @@
 name: Deploy on QA
 
 on:
-  push:
+  pull_request: #change to push later
     branches: [ "main" ]
   workflow_dispatch:
 
