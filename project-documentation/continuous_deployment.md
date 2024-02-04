@@ -1,9 +1,9 @@
 # Continuous Deployment Setup
 
-**Github**
+**GitHub**
 -
 - Setup main branch
-- Github Actions -> Configure NodeJs
+- GitHub Actions -> Configure Node.js
 ```yml
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
@@ -43,23 +43,28 @@ run: |
 **Next For Production Environment**
 -
 - Go to AWS for setting up QA env
-- Identidy Access Management Dashboard
+- Identify Access Management Dashboard
 - Users -> Add User
 - Set Access Key for Id and Secret Key
 - Go to Attach existing policies directly
 - Set AdministrationAccess-AWSElasticBeanstalk
 - Create User
 
-**Set Elastic Beanstalk Access For Github Actions**
+**Set Elastic Beanstalk Access For GitHub Actions**
 - 
 - Set Repository Actions Secrets -> AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY
 - Create Application in ElasticBeanstalk
 - Choose Sample Application and Create Application
 
-- Create a new NodeJs action workflow in Github Actions
+- Create a new Node.js action workflow in GitHub Actions
 - Set env vars and continuous deployment with AWS
 
 - Workflow will upload zip on its own, when a new commit or merge is done.
 
 - Now, setup a new web server environment on Elastic Beanstalk
-- 
+
+**This setup ensures, on each Pull Request we first run all the unit tests and e2e tests**
+
+**Deploy it on QA environment, for manual testing**
+
+**Then deploy on command using _workflow-dispatch_ to Production environment.**
