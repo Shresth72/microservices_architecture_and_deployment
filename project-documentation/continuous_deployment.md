@@ -38,7 +38,7 @@ run: |
     npm test
 ```
 - Set new branch rules
-- Continuous Deployment Setup complete for dev environment
+- Continuous Deployment Setup complete for running all tests
 
 **Next For Production Environment**
 -
@@ -69,11 +69,12 @@ run: |
 
 - **Then deploy on command using _workflow-dispatch_ to Production environment.**
 
-**Refactoring Services to reduce unnecessary connections, references and make them more independent**
+**Refactoring Services to reduce unnecessary connections, references and make them more independent using RPC**
 -
 - Managing the connections with RPC connections.
 - Shifting data endpoints
     - Wishlist and Shopping_Details, from customer service to shopping service.
     - Publishing and sending signals from each service to other to automatically detect, deletion of user to update shopping service and other utilities.
     - Grab product info through RPC from product service to shopping service.
-    - 
+- **This way the shopping service acts as the RPC Request sender and only sends requests for payload to the products service. And the Product service is a RPC Observer that sends payload whenever a request message is received.**
+- We can simple reduce the customer model as we no longer need the product and cart and simply can read from other services using RPC.

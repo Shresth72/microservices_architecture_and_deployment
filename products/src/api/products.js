@@ -1,10 +1,12 @@
 const ProductService = require('../services/product-service');
-const { PublishMessage } = require("../utils");
+const { RPCObserver } = require('../utils');
 const UserAuth = require('./middlewares/auth')
 
 module.exports = (app, channel) => {
     
     const service = new ProductService();
+
+    RPCObserver("PRODCUT_RPC", service);
 
     //get top products and category
     app.get('/', async (req,res,next) => {

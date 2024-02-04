@@ -4,6 +4,7 @@ const { PublishMessage, SubscribeMessage } = require("../utils");
 
 module.exports = (app) => {
   const service = new ShoppingService();
+  
   SubscribeMessage(channel, service);
 
   // Cart

@@ -7,10 +7,13 @@ class ShoppingService {
     this.repository = new ShoppingRepository();
   }
 
-  // Cart Interaction
+  /* ------------ Cart Interaction with RPC ------------- */
   async addCartItem(customerId, product_id, qty) {
     // Grab product info from the product service through RPC
-    const productResponse = {}; // TODO: add RPC codes
+    const productResponse = await RPCRequest("PRODUCT_RPC", {
+      type: "VIEW_PRODUCT",
+      data: { product_id }
+    });
 
     if (productResponse && productResponse._id) {
       const data = await this.repository.ManageCart(
@@ -25,7 +28,12 @@ class ShoppingService {
   }
 
   async removeCartItem(customerId, productId) {
-    return await this.repository.ManageCart(customerId, { _id: productId }, 0, true);
+    return await this.repository.ManageCart(
+      customerId,
+      { _id: productId },
+      0,
+      true
+    );
   }
 
   async getCart(_id) {
@@ -87,6 +95,9 @@ class ShoppingService {
         break;
       case "REMOVE_FROM_CART":
         this.ManageCart(userId, product, qty, true);
+        break;
+      case "DELETE_PROFILE":
+        this.repository.ManageCart(userId, null, 0, true);
         break;
       default:
         break;

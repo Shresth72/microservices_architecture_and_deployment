@@ -10,42 +10,6 @@ const CustomerSchema = new Schema({
     address:[
         { type: Schema.Types.ObjectId, ref: 'address', require: true }
     ],
-    cart: [
-        {
-            products: {
-                _id: {type: String, require: true},
-                name: {type: String},
-                banner: {type: String},
-                price: {type: Number},
-            },
-            unit: { type: String, require: true },
-        }
-    ],
-    wishlist:[
-        { 
-            _id: {type: String, require: true},
-            name: {type: String},
-            description: {type: String},
-            banner: {type: String},
-            available: {type: Boolean},
-            price: {type: Number},
-        }
-    ],
-    orders: [ 
-        {
-            _id: {type: String, require: true},
-            amount: {type: Number},
-            date: {type: Date, default: Date.now()},
-            // products: [
-            //     {
-            //         _id: {type: String, require: true},
-            //         name: {type: String},
-            //         banner: {type: String},
-            //         price: {type: Number},
-            //     }
-            // ],
-        }
-    ]
 },{
     toJSON: {
         transform(doc, ret){
