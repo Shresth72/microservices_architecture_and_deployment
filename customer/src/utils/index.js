@@ -82,3 +82,14 @@ module.exports.SubscribeMessage = async (channel, service) => {
     channel.ack(data);
   });
 }
+
+// Publish Messages
+module.exports.PublishMessage = async (channel, binding_key, message) => {
+  try {
+    await channel.publish(process.env.EXCHANGE_NAME, binding_key, Buffer.from(message));
+    console.log(`Sent event ${message}`);
+  } catch (err) {
+    console.log("Error in publishing message");
+    throw new Error(err);
+  }
+}

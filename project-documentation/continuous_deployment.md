@@ -63,8 +63,17 @@ run: |
 
 - Now, setup a new web server environment on Elastic Beanstalk
 
-**This setup ensures, on each Pull Request we first run all the unit tests and e2e tests**
+- **This setup ensures, on each Pull Request we first run all the unit tests and e2e tests**
 
-**Deploy it on QA environment, for manual testing**
+- **Deploy it on QA environment, for manual testing**
 
-**Then deploy on command using _workflow-dispatch_ to Production environment.**
+- **Then deploy on command using _workflow-dispatch_ to Production environment.**
+
+**Refactoring Services to reduce unnecessary connections, references and make them more independent**
+-
+- Managing the connections with RPC connections.
+- Shifting data endpoints
+    - Wishlist and Shopping_Details, from customer service to shopping service.
+    - Publishing and sending signals from each service to other to automatically detect, deletion of user to update shopping service and other utilities.
+    - Grab product info through RPC from product service to shopping service.
+    - 
