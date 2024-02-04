@@ -1,4 +1,5 @@
 name: Continuous Integration
+#This workflow is for running unit and e2e testings
 
 on:
   pull_request:
