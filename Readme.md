@@ -198,3 +198,11 @@ location / {
 - Setup a new self-hosted runner for GitHub Actions
   - Choose Linux
   - And run all the commands in the runner on the ec2 console.
+- This creates a service file ```svc.sh```, which needs to be installed and started. 
+
+**This service file is responsible for adding a listener that listens for the actions in the GitHub repo with the help of the Linux runner and it will directly deploy it to the EC2 Instance on AWS**
+```bash
+sudo ./svc.sh install
+
+sudo ./svc.sh start
+```

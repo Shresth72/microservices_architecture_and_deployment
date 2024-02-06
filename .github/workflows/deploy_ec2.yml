@@ -30,4 +30,5 @@ jobs:
         working-directory: ./customer
         run: |
           npm ci
+          pm2 delete all
           npm run scale
