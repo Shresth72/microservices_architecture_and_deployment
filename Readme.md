@@ -197,3 +197,25 @@ sudo ./svc.sh start
 - Setup all the environment variables in the Action Secrets, for workflows to access those variables. 
 
 - Now, setting up the Deploy_EC2 workflow.
+
+### Setting up routes in nginx in the EC2 Instance
+
+- We need to change the nginx config files to setup routes, to edit config files use : ```sudo vim /etc/nginx/sites-available/default```
+
+- Set route locations in the server block in the nginx config and setup headers
+
+```bash
+location /customer {
+    rewrite ^/customer/(.*)$ /$1 break;
+    proxy_pass http://localhost:8001;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+}
+```
+
+- Check the config file for errors ```sudo nginx -t``` and restart nginx ```sudo systemctl restart nginx```
+
+- The service is now working on the given IP address on EC2 with all the defined routes available!
