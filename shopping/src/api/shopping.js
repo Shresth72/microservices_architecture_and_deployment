@@ -71,16 +71,18 @@ module.exports = (app) => {
     const { txnNumber } = req.body;
 
     try {
-      const { data } = await service.PlaceOrder({ _id, txnNumber });
+      const data = await service.createOrder(_id, txnNumber);
+      return res.status(200).json(data);
+    } catch (err) {
+      next(err);
+    }
+  });
 
-      const payload = await service.GetOrderPayload(_id, data, "CREATE_ORDER");
-      // PublishCustomerEvent(payload);
-      PublishMessage(
-        channel,
-        process.env.CUSTOMER_BINDING_KEY,
-        JSON.stringify(payload)
-      );
+  app.get("/order/:id", UserAuth, async (req, res, next) => {
+    const { _id } = req.user;
 
+    try {
+      const data = service.GetOrder(_id);
       return res.status(200).json(data);
     } catch (err) {
       next(err);
@@ -91,7 +93,7 @@ module.exports = (app) => {
     const { _id } = req.user;
 
     try {
-      const { data } = service.GetOrders(_id);
+      const data = service.GetOrders(_id);
       return res.status(200).json(data);
     } catch (err) {
       next(err);

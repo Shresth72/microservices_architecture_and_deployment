@@ -19,10 +19,12 @@ class ShoppingRepository {
     }
   }
 
-  async Orders(customerId) {
+  async Orders(customerId, orderId) {
     try {
-      const orders = await OrderModel.find({ customerId });
-      return orders;
+      if (orderId) {
+        return OrderModel.findOne({ _id: orderId });
+      }
+      return OrderModel.find({ customerId });
     } catch (err) {
       throw APIError(
         "API Error",
@@ -165,6 +167,21 @@ class ShoppingRepository {
       }
 
       return {};
+    } catch (err) {
+      throw APIError(
+        "API Error",
+        STATUS_CODES.INTERNAL_ERROR,
+        "Unable to Find Category"
+      );
+    }
+  }
+
+  async deleteProfileData(customerId) {
+    try {
+      Promise.all([
+        CartModel.findOneAndDelete({ customerId }),
+        WishlistModel.findOneAndDelete({ customerId })
+      ]);
     } catch (err) {
       throw APIError(
         "API Error",

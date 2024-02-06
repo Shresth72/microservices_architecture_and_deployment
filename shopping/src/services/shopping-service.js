@@ -81,7 +81,7 @@ class ShoppingService {
 
         if (productResponse) {
           return productResponse;
-        } 
+        }
         return FormateData({ error: "No products found" });
       }
     } catch (err) {
@@ -90,23 +90,23 @@ class ShoppingService {
   }
 
   // Orders
-  async PlaceOrder(userInput) {
-    const { _id, txnNumber } = userInput;
-
+  async createOrder(customerId, txnNumber) {
     // Verify the txn number with payment logs
 
     try {
-      const orderResult = await this.repository.CreateNewOrder(_id, txnNumber);
-      return FormateData(orderResult);
+      return await this.repository.CreateNewOrder(customerId, txnNumber);
     } catch (err) {
       throw new APIError("Data Not found", err);
     }
   }
 
+  async GetOrder(orderId) {
+    return await this.repository.Orders("", orderId);
+  }
+
   async GetOrders(customerId) {
     try {
-      const orders = await this.repository.Orders(customerId);
-      return FormateData(orders);
+      return await this.repository.Orders(customerId, "");
     } catch (err) {
       throw new APIError("Data Not found", err);
     }
@@ -149,15 +149,21 @@ class ShoppingService {
     }
   }
 
-  async GetOrderPayload(userId, order, event) {
-    if (order) {
-      const payload = {
-        event,
-        data: { userId, order }
-      };
-      return FormateData(payload);
+  async deleteProfileData(customerId) {
+    return this.repository.deleteProfileData(customerId);
+  }
+
+  async SubscribeEvents(payload) {
+    payload = JSON.parse(payload);
+    const { event, data } = payload;
+
+    switch (event) {
+      case "DELETE_PROFILE":
+        await this.deleteProfileData(data.userId);
+        break;
+      default:
+        break;
     }
-    return FormateData({ error: "No order available" });
   }
 }
 
