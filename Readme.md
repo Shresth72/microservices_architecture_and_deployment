@@ -214,4 +214,4 @@ sudo ./svc.sh start
 
 **Scaling Microservices using Reverse Proxy**
 -
-<img src="project-documentation\images\reverseproxy.png" alt="drawing" style="width:400px;"/>
+<img src="project-documentation\images\reverseproxy.png" alt="drawing" style="width:600px;"/>
