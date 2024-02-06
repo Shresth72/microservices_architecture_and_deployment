@@ -140,6 +140,8 @@ run: |
 ssh -i "key" "public DNS"
 ```
 
+### Setting up connection to GitHub repo of the service
+
 - Install node and git on the instance
 
 - Now generate SSH key pair to connect it the GitHub repo using :
