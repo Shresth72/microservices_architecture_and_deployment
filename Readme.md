@@ -98,3 +98,17 @@ run: |
     - Grab product info through RPC from product service to shopping service.
 - **This way the shopping service acts as the RPC Request sender and only sends requests for payload to the products service. And the Product service is a RPC Observer that sends payload whenever a request message is received.**
 - We can simply reduce the customer model as we no longer need the product and cart and simply can read data from other services using RPC.
+
+<br/><br/>
+
+**Error Handling**
+-
+- Catch base errors and respond to client with meaningful error code
+- Trace / Log Error with suitable tools. example: cloud-watch, Sentry, etc.
+- Monitoring & reporting with suitable tools to handle incidents
+
+<br/><br/>
+
+**Testing**
+-
+- working...
