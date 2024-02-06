@@ -40,7 +40,7 @@ class CustomerService {
 
       return { id: existingCustomer._id, token };
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("error in signing in", err);
     }
   }
 
@@ -65,9 +65,9 @@ class CustomerService {
         _id: existingCustomer._id
       });
 
-      return FormateData({ id: existingCustomer._id, token });
+      return { id: existingCustomer._id, token };
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("error in creating user", err);
     }
   }
 
@@ -75,25 +75,23 @@ class CustomerService {
     const { street, postalCode, city, country } = userInputs;
 
     try {
-      const addressResult = await this.repository.CreateAddress({
+      return this.repository.CreateAddress({
         _id,
         street,
         postalCode,
         city,
         country
       });
-      return FormateData(addressResult);
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("error in creating address", err);
     }
   }
 
   async GetProfile(id) {
     try {
-      const existingCustomer = await this.repository.FindCustomerById({ id });
-      return FormateData(existingCustomer);
+      return this.repository.FindCustomerById({ id });
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("profile not found", err);
     }
   }
 
@@ -109,7 +107,7 @@ class CustomerService {
         payload
       };
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("error in deleting profile", err);
     }
   }
 }

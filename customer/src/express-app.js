@@ -12,8 +12,4 @@ module.exports = async (app, channel) => {
     
     //api
     customer(app, channel);
-
-    // error handling
-    app.use(HandleErrors);
-    
 }

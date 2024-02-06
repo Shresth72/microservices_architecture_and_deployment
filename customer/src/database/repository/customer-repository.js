@@ -1,8 +1,5 @@
 const { CustomerModel, AddressModel } = require("../models");
-const {
-  APIError,
-  STATUS_CODES
-} = require("../../utils/app-errors");
+const { APIError, STATUS_CODES } = require("../../utils/app-errors");
 
 //Dealing with data base operations
 class CustomerRepository {
@@ -18,11 +15,7 @@ class CustomerRepository {
       const customerResult = await customer.save();
       return customerResult;
     } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Create Customer"
-      );
+      throw new APIError("unable to create customer");
     }
   }
 
