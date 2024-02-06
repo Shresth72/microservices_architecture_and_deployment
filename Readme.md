@@ -139,6 +139,7 @@ run: |
 ```bash
 ssh -i "key" "public DNS"
 ```
+<br/>
 
 ### Setting up connection to GitHub repo of the service
 
@@ -156,14 +157,14 @@ cat ~/.ssh/id_rsa.pub
 
 - Add the public key in Deploy Keys on GitHub. To check if the key can authenticate the GitHub to the ec2 instance, run ```ssh -vT git@github.com```
 
-- If it perfectly connects, clone the git repo onto the ec2 instance.Install all the dependencies and export all .env variables too in the cloned repo and run it. 
+- If it perfectly connects, clone the git repo onto the ec2 instance.Install all the dependencies and export all .env variables too in the cloned repo and run it. Also, run the scale command to expose multiple pId's of your instance.
 
 - To connect and control traffic directly from the ec2 console and expose a Port to connect; add inbound security rules in the security groups. Create a custom TCP rule with "PORT" value and "Anywhere IPv4" as source to access the URL from anywhere.
-
+  
 <br/>
 
-### To make it secure using NGINX
-- Setup new HTTP and HTTPS rules
+### Making connection secure using NGINX
+- Delete previous custom TCP rule and setup a new HTTP and HTTPS rules
 - Install Nginx on the ec2 instance and enable it.
 ```bash
 sudo amazon-linux-extras install nginx1 -y
@@ -189,5 +190,8 @@ location / {
 
 - Check the config file for errors ```sudo nginx -t``` and restart nginx ```sudo systemctl restart nginx```
 
+<br/><br/>
 
-
+**Setting up workflows to automate this whole process**
+-
+- 
