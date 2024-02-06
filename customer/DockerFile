@@ -1,12 +1,17 @@
-FROM node
+FROM node:16 as builder
+WORKDIR /app
 
-WORKDIR  /app/customer
+COPY ["package*.json". "./"]
+USER 0
+RUN npm ci --production
 
-COPY package*.json ./
-
-RUN npm install
-
+USER node
 COPY . .
+
+FROM node:16-slim
+USER node
+COPY --from=builder /app /app
+WORKDIR /app
 
 EXPOSE 8001
 

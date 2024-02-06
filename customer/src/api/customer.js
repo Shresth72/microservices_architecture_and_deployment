@@ -1,6 +1,7 @@
 const CustomerService = require("../services/customer-service");
 const UserAuth = require("./middlewares/auth");
 const { PublishMessage } = require("../utils");
+const os = require("os");
 
 module.exports = (app, channel) => {
   const service = new CustomerService();
@@ -68,5 +69,12 @@ module.exports = (app, channel) => {
     } catch (err) {
       next(err);
     }
+  });
+
+  app.get("/whoami", (req, res, next) => {
+    return res.status(200).json({
+      message: "/customer: I am a customer service!",
+      host: os.hostname()
+    });
   });
 };

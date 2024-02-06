@@ -115,7 +115,7 @@ run: |
 
 <br/><br/>
 
-**Scaling entire architecture using Node.js Clusters**
+**Scaling service using Node.js Clusters**
 -
 - Implementing Horizontal Scaling and initiating multiple instances of the services using AWS EC2 :
    <!-- - <br/> -->
@@ -194,6 +194,7 @@ location / {
 
 **Setting up workflows to automate this whole process**
 -
+
 - Setup a self-hosted workflow for deploying to ec2 on a node.js run environment
 - Setup a new self-hosted runner for GitHub Actions
   - Choose Linux
@@ -214,4 +215,11 @@ sudo ./svc.sh start
 
 **Scaling Microservices using Reverse Proxy**
 -
+
+- Firstly, working with the customer service, we create a docker image of the service and expose it to port 8001.
+- A Nginx image uses this port to handle the request from customer service and can be used directly as a container.
+
 <img src="project-documentation\images\reverseproxy.png" alt="drawing" style="width:600px;"/>
+
+- Since, nginx is managing all requests for customer service acts as its host. We can simply spin up multiple instance of customer service and the nginx will manage the requests along with load balancing as a reverse proxy.
+- We can also change the workflow to use docker instead of pm2 for scaling up customer service.

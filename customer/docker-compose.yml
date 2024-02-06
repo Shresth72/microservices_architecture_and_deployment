@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  customer-ms:
+    build: .
+    env_file:
+      - ./.env
+  
+  nginx:
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    depends_on:
+      - customer-ms
+    ports:
+      - 8001:8001

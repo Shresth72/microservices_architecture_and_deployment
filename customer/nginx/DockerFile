@@ -1,0 +1,7 @@
+FROM nginx 
+
+# Remove the default/existing nginx.conf
+RUN rm /etc/nginx/nginx.conf
+
+# Copy the nginx.conf from the local directory to the container
+COPY nginx.conf /etc/nginx/nginx.conf
