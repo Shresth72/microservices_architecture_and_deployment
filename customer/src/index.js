@@ -4,6 +4,7 @@ const { databaseConnection } = require("./database");
 const expressApp = require("./express-app");
 const dotEnv = require("dotenv");
 const { CreateChannel } = require("./utils");
+const { errorHandler } = require("./utils/errors");
 
 const StartServer = async () => {
   dotEnv.config();
@@ -16,13 +17,7 @@ const StartServer = async () => {
 
   await expressApp(app, channel);
 
-  // catch all errors and report to logger
-  app.use((error, req, res, next) => {
-    const statusCode = error.statusCode || 500;
-    const data = error.data || error.message;
-
-    return res.status(statusCode).json({ data });
-  });
+  errorHandler(app);
 
   app
     .listen(PORT, () => {

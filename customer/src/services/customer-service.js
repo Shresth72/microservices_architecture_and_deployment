@@ -1,13 +1,12 @@
 const { CustomerRepository } = require("../database");
 const {
-  FormateData,
   GeneratePassword,
   GenerateSalt,
   GenerateSignature,
   ValidatePassword
 } = require("../utils");
-const { APIError } = require("../utils/app-errors");
 const {
+  APIError,
   NotFoundError,
   ValidationError
 } = require("../utils/errors/app-errors");

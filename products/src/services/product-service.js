@@ -1,6 +1,6 @@
+const { APIError, NotFoundError } = require("../utils/errors/app-errors");
 const { ProductRepository } = require("../database");
 const { FormateData } = require("../utils");
-const { APIError } = require("../utils/app-errors");
 
 // All Business logic will be here
 class ProductService {
@@ -8,18 +8,11 @@ class ProductService {
     this.repository = new ProductRepository();
   }
 
-  async CreateProduct(productInputs) {
-    try {
-      const productResult = await this.repository.CreateProduct(productInputs);
-      return FormateData(productResult);
-    } catch (err) {
-      throw new APIError("Data Not found");
-    }
-  }
-
   async GetProducts() {
     try {
       const products = await this.repository.Products();
+
+      if (!products) throw new NotFoundError("No products available");
 
       let categories = {};
 
@@ -27,32 +20,39 @@ class ProductService {
         categories[type] = type;
       });
 
-      return FormateData({
+      return {
         products,
         categories: Object.keys(categories)
-      });
+      };
     } catch (err) {
-      throw new APIError("Data Not found");
+      throw new APIError("error in fetching products");
     }
   }
 
-  async GetProductDescription(productId) {
+  async CreateProduct(productInputs) {
     try {
-      const product = await this.repository.FindById(productId);
-      return FormateData(product);
+      return this.repository.CreateProduct(productInputs);
     } catch (err) {
-      throw new APIError("Data Not found");
+      throw new APIError("error in creating product");
     }
   }
 
   async GetProductsByCategory(category) {
     try {
-      const products = await this.repository.FindByCategory(category);
-      return FormateData(products);
+      return this.repository.FindByCategory(category);
     } catch (err) {
-      throw new APIError("Data Not found");
+      throw new APIError("error in fetching products by category");
     }
   }
+
+  async GetProductDescription(productId) {
+    try {
+      return this.repository.FindById(productId);
+    } catch (err) {
+      throw new APIError("error in fetching product description");
+    }
+  }
+
 
   async GetSelectedProducts(selectedIds) {
     try {

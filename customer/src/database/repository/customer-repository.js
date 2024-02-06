@@ -1,5 +1,5 @@
 const { CustomerModel, AddressModel } = require("../models");
-const { APIError, STATUS_CODES } = require("../../utils/app-errors");
+const { APIError, STATUS_CODES } = require("../../utils/errors/app-errors");
 
 //Dealing with data base operations
 class CustomerRepository {
@@ -38,11 +38,7 @@ class CustomerRepository {
 
       return await profile.save();
     } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Error on Create Address"
-      );
+      throw new APIError("unable to create address");
     }
   }
 
@@ -51,11 +47,7 @@ class CustomerRepository {
       const existingCustomer = await CustomerModel.findOne({ email: email });
       return existingCustomer;
     } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Customer"
-      );
+      throw new APIError("unable to find customer");
     }
   }
 
@@ -66,16 +58,16 @@ class CustomerRepository {
       );
       return existingCustomer;
     } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Customer"
-      );
+      throw new APIError("unable to find customer");
     }
   }
 
   async DeleteCustomerById({ id }) {
-    return CustomerModel.findByIdAndDelete(id);
+    try {
+      return CustomerModel.findByIdAndDelete(id);
+    } catch (err) {
+      throw new APIError("unable to delete customer");
+    }
   }
 }
 

@@ -5,13 +5,13 @@ const UserAuth = require("./middlewares/auth");
 module.exports = (app, channel) => {
   const service = new ProductService();
 
-  RPCObserver("PRODCUT_RPC", service);
+  RPCObserver("PRODUCT_RPC", service);
 
   //get top products and category
   app.get("/", async (req, res, next) => {
     //check validation
     try {
-      const { data } = await service.GetProducts();
+      const data = await service.GetProducts();
       return res.status(200).json(data);
     } catch (error) {
       next(err);
@@ -23,7 +23,7 @@ module.exports = (app, channel) => {
       const { name, desc, type, unit, price, available, suplier, banner } =
         req.body;
       // validation
-      const { data } = await service.CreateProduct({
+      const data = await service.CreateProduct({
         name,
         desc,
         type,
@@ -43,7 +43,7 @@ module.exports = (app, channel) => {
     const type = req.params.type;
 
     try {
-      const { data } = await service.GetProductsByCategory(type);
+      const data = await service.GetProductsByCategory(type);
       return res.status(200).json(data);
     } catch (err) {
       next(err);
@@ -54,7 +54,7 @@ module.exports = (app, channel) => {
     const productId = req.params.id;
 
     try {
-      const { data } = await service.GetProductDescription(productId);
+      const data = await service.GetProductDescription(productId);
       return res.status(200).json(data);
     } catch (err) {
       next(err);
