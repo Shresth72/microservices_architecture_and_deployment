@@ -7,6 +7,10 @@ const {
   ValidatePassword
 } = require("../utils");
 const { APIError } = require("../utils/app-errors");
+const {
+  NotFoundError,
+  ValidationError
+} = require("../utils/errors/app-errors");
 
 class CustomerService {
   constructor() {
@@ -19,23 +23,22 @@ class CustomerService {
     try {
       const existingCustomer = await this.repository.FindCustomer({ email });
 
-      if (existingCustomer) {
-        const validPassword = await ValidatePassword(
-          password,
-          existingCustomer.password,
-          existingCustomer.salt
-        );
+      if (!existingCustomer)
+        throw new NotFoundError("user not found with provided email");
 
-        if (validPassword) {
-          const token = await GenerateSignature({
-            email: existingCustomer.email,
-            _id: existingCustomer._id
-          });
-          return FormateData({ id: existingCustomer._id, token });
-        }
-      }
+      const validPassword = await ValidatePassword(
+        password,
+        existingCustomer.password,
+        existingCustomer.salt
+      );
+      if (!validPassword) throw new ValidationError("password does not match");
 
-      return FormateData(null);
+      const token = await GenerateSignature({
+        email: existingCustomer.email,
+        _id: existingCustomer._id
+      });
+
+      return { id: existingCustomer._id, token };
     } catch (err) {
       throw new APIError("Data Not found", err);
     }

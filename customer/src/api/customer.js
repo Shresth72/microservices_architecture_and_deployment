@@ -22,7 +22,7 @@ module.exports = (app, channel) => {
     try {
       const { email, password } = req.body;
 
-      const { data } = await service.SignIn({ email, password });
+      const data = await service.SignIn({ email, password });
 
       return res.json(data);
     } catch (err) {
