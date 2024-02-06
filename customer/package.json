@@ -5,10 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start:dev": "npx nodemon",
-    "build": "rimraf ./build && tsc",
-    "start-tsc": "npm run build && nodemon build/index.js",
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.js",
+    "scale": "pm2 start src/index.js --name customer-service -i 3"
   },
   "keywords": [],
   "author": "",

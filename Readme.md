@@ -117,4 +117,22 @@ run: |
 
 **Scaling entire architecture**
 -
-- working...
+- Implementing Horizontal Scaling and initiating multiple instances of the services using AWS EC2 :
+   <!-- - <br/> -->
+   <!-- <img src="project-documentation/images/image.png" alt="drawing" style="width:400px;"/> -->
+    - Launch Instance
+    - Choose the Amazon Machine Image, and select the OS image
+    - Choose Instance type
+    - Create Key Pair to securely connect to the instance
+    - Choose Security Group (SSH traffic, allows all IP addresses to access the instance)
+- Create the Instance and Connect
+- Connecting using SS client :
+    - Open an SS client
+    - Locate your private key file. The key for this instance for eg: ```k8s-access.com```
+    - Run command ```chmod 400 k8s-access.pem``` to ensure the key is not publicly available.
+    - Connect to the instance using its Public DNS. For eg: ```ec2-52-58-237-8.eu-central-1.compute.amazonaws.com```
+    - Run this command to connect
+    ```bash
+        ssh -i "key" "public DNS"
+    ```
+- v
