@@ -30,5 +30,15 @@ jobs:
         working-directory: ./customer
         run: |
           npm ci
-          pm2 delete all
-          npm run scale
+
+      - name: Create env file
+        run: |
+          echo APP_SECRET=${{ secrets.APP_SECRET }} >> ./customer/.env
+          echo DB_URL=${{ secrets.DB_URL }} >> ./customer/.env
+          echo MSG_BROKER_URL=${{ secrets.MSG_BROKER_URL }} >> ./customer/.env
+          echo EXCHANGE_NAME=${{ secrets.EXCHANGE_NAME }} >> ./customer/.env
+          echo PORT=8001 >> ./customer/.env
+          cat ./customer/.env
+
+      - name: run docker compose file
+        run: sudo docker-compose up --scale customer=3 -d
