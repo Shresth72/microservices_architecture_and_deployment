@@ -115,7 +115,7 @@ run: |
 
 <br/><br/>
 
-**Scaling entire architecture**
+**Scaling entire architecture using Node.js Clusters**
 -
 - Implementing Horizontal Scaling and initiating multiple instances of the services using AWS EC2 :
    <!-- - <br/> -->
@@ -206,3 +206,11 @@ sudo ./svc.sh install
 
 sudo ./svc.sh start
 ```
+
+<br/>
+<hr/>
+<hr/>
+<br/>
+
+**Scaling Microservices using Reverse Proxy**
+<img src="project-documentation\images\reverseproxy.png" alt="drawing" style="width:400px;"/>
