@@ -1,6 +1,6 @@
 const ShoppingService = require("../services/shopping-service");
 const UserAuth = require("./middlewares/auth");
-const { PublishMessage, SubscribeMessage } = require("../utils");
+const { SubscribeMessage } = require("../utils");
 
 module.exports = (app) => {
   const service = new ShoppingService();
@@ -82,7 +82,7 @@ module.exports = (app) => {
     const { _id } = req.user;
 
     try {
-      const data = service.GetOrder(_id);
+      const data = await service.GetOrder(_id);
       return res.status(200).json(data);
     } catch (err) {
       next(err);
@@ -93,7 +93,7 @@ module.exports = (app) => {
     const { _id } = req.user;
 
     try {
-      const data = service.GetOrders(_id);
+      const data = await service.GetOrders(_id);
       return res.status(200).json(data);
     } catch (err) {
       next(err);

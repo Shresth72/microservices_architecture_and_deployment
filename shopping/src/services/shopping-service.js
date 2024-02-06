@@ -1,5 +1,6 @@
 const { ShoppingRepository } = require("../database");
 const { FormateData, RPCRequest } = require("../utils");
+const { APIError, NotFoundError } = require("../utils/errors/app-errors");
 
 // All Business logic will be here
 class ShoppingService {
@@ -8,39 +9,47 @@ class ShoppingService {
   }
 
   /* ------------ Cart Interaction with RPC ------------- */
-  async addCartItem(customerId, product_id, qty) {
-    // Grab product info from the product service through RPC
-    const productResponse = await RPCRequest("PRODUCT_RPC", {
-      type: "VIEW_PRODUCT",
-      data: { product_id }
-    });
-
-    if (productResponse && productResponse._id) {
-      const data = await this.repository.ManageCart(
-        customerId,
-        productResponse,
-        qty,
-        false
-      );
-    }
-
-    throw new Error("Product not found");
-  }
-
-  async removeCartItem(customerId, productId) {
-    return await this.repository.ManageCart(
-      customerId,
-      { _id: productId },
-      0,
-      true
-    );
-  }
-
   async getCart(_id) {
     try {
       return this.repository.Cart(_id);
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("error in fetching cart");
+    }
+  }
+
+  async addCartItem(customerId, product_id, qty) {
+    try {
+      // Grab product info from the product service through RPC
+      const productResponse = await RPCRequest("PRODUCT_RPC", {
+        type: "VIEW_PRODUCT",
+        data: { product_id }
+      });
+
+      if (productResponse && productResponse._id) {
+        const data = await this.repository.ManageCart(
+          customerId,
+          productResponse,
+          qty,
+          false
+        );
+      }
+
+      throw new NotFoundError("product not found");
+    } catch (err) {
+      throw new APIError("cannot add to cart");
+    }
+  }
+
+  async removeCartItem(customerId, productId) {
+    try {
+      return await this.repository.ManageCart(
+        customerId,
+        { _id: productId },
+        0,
+        true
+      );
+    } catch (err) {
+      throw new APIError("cannot remove from cart");
     }
   }
 
@@ -53,7 +62,7 @@ class ShoppingService {
         false
       );
     } catch (err) {
-      throw new APIError("Cannot add to wishlist", err);
+      throw new APIError("cannot add to wishlist");
     }
   }
 
@@ -61,7 +70,7 @@ class ShoppingService {
     try {
       return await this.repository.ManageWishlist(customerId, product_id, true);
     } catch (err) {
-      throw new APIError("Cannot remove from wishlist", err);
+      throw new APIError("cannot remove from wishlist");
     }
   }
 
@@ -82,10 +91,11 @@ class ShoppingService {
         if (productResponse) {
           return productResponse;
         }
-        return FormateData({ error: "No products found" });
+        
+        throw new NotFoundError("products not found");
       }
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("cannot fetch wishlist");
     }
   }
 
@@ -96,22 +106,27 @@ class ShoppingService {
     try {
       return await this.repository.CreateNewOrder(customerId, txnNumber);
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("cannot create order");
     }
   }
 
   async GetOrder(orderId) {
-    return await this.repository.Orders("", orderId);
+    try {
+      return this.repository.Orders("", orderId);
+    } catch (err) {
+      throw new APIError("cannot fetch order");
+    }
   }
 
   async GetOrders(customerId) {
     try {
-      return await this.repository.Orders(customerId, "");
+      return this.repository.Orders(customerId, "");
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("cannot fetch orders");
     }
   }
 
+  // Utilities and connections
   async ManageCart(customerId, item, qty, isRemove) {
     try {
       const cartResult = await this.repository.AddCartItem(
@@ -123,7 +138,7 @@ class ShoppingService {
 
       return FormateData(cartResult);
     } catch (err) {
-      throw new APIError("Data Not found", err);
+      throw new APIError("cannot manage cart");
     }
   }
 
@@ -150,7 +165,11 @@ class ShoppingService {
   }
 
   async deleteProfileData(customerId) {
-    return this.repository.deleteProfileData(customerId);
+    try {
+      return this.repository.deleteProfileData(customerId);
+    } catch (err) {
+      throw new APIError("cannot delete profile");
+    }
   }
 
   async SubscribeEvents(payload) {

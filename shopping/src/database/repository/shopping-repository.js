@@ -1,6 +1,6 @@
 const { OrderModel, CartModel, WishlistModel } = require("../models");
 const { v4: uuidv4 } = require("uuid");
-const { APIError, BadRequestError } = require("../../utils/app-errors");
+const { APIError } = require("../../utils/errors/app-errors");
 const _ = require("lodash");
 
 //Dealing with data base operations
@@ -11,11 +11,7 @@ class ShoppingRepository {
         customerId
       });
     } catch (err) {
-      throw APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Category"
-      );
+      throw APIError("cannot find cart");
     }
   }
 
@@ -26,11 +22,7 @@ class ShoppingRepository {
       }
       return OrderModel.find({ customerId });
     } catch (err) {
-      throw APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Orders"
-      );
+      throw APIError("cannot find orders");
     }
   }
 
@@ -66,11 +58,7 @@ class ShoppingRepository {
         });
       }
     } catch (err) {
-      throw APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Category"
-      );
+      throw APIError("repository error - cannot manage cart");
     }
   }
 
@@ -105,11 +93,7 @@ class ShoppingRepository {
         });
       }
     } catch (err) {
-      throw APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Category"
-      );
+      throw APIError("repository error - cannot manage wishlist");
     }
   }
 
@@ -117,11 +101,7 @@ class ShoppingRepository {
     try {
       return await WishlistModel.findOne({ customerId });
     } catch (err) {
-      throw APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Category"
-      );
+      throw APIError("cannot find wishlist");
     }
   }
 
@@ -168,11 +148,7 @@ class ShoppingRepository {
 
       return {};
     } catch (err) {
-      throw APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Category"
-      );
+      throw APIError("cannot create order");
     }
   }
 
@@ -183,11 +159,7 @@ class ShoppingRepository {
         WishlistModel.findOneAndDelete({ customerId })
       ]);
     } catch (err) {
-      throw APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Category"
-      );
+      throw APIError("cannot delete profile data");
     }
   }
 }

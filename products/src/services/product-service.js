@@ -1,6 +1,5 @@
 const { APIError, NotFoundError } = require("../utils/errors/app-errors");
 const { ProductRepository } = require("../database");
-const { FormateData } = require("../utils");
 
 // All Business logic will be here
 class ProductService {
@@ -49,39 +48,16 @@ class ProductService {
     try {
       return this.repository.FindById(productId);
     } catch (err) {
-      throw new APIError("error in fetching product description");
+      throw new APIError("error in fetching product details");
     }
   }
-
 
   async GetSelectedProducts(selectedIds) {
     try {
-      const products = await this.repository.FindSelectedProducts(selectedIds);
-      return FormateData(products);
+      return this.repository.FindSelectedProducts(selectedIds);
     } catch (err) {
-      throw new APIError("Data Not found");
+      throw new APIError("error in fetching selected products");
     }
-  }
-
-  async GetProductById(productId) {
-    try {
-      return await this.repository.FindById(productId);
-    } catch (err) {
-      throw new APIError("Data Not found");
-    }
-  }
-
-  async GetProductPayload(userId, { productId, qty }, event) {
-    const product = await this.repository.FindById(productId);
-
-    if (product) {
-      const payload = {
-        event,
-        data: { userId, product, qty }
-      };
-      return FormateData(payload);
-    }
-    return FormateData({ error: "No product available" });
   }
 
   // RPC Response

@@ -1,5 +1,5 @@
 const { ProductModel } = require("../models");
-const { APIError } = require("../../utils/app-errors");
+const { APIError } = require("../../utils/errors/app-errors");
 
 //Dealing with data base operations
 class ProductRepository {
@@ -28,11 +28,7 @@ class ProductRepository {
       const productResult = await product.save();
       return productResult;
     } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Create Product"
-      );
+      throw new APIError("unable to create product");
     }
   }
 
@@ -40,11 +36,7 @@ class ProductRepository {
     try {
       return await ProductModel.find();
     } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Get Products"
-      );
+      throw new APIError("unable to fetch products");
     }
   }
 
@@ -52,11 +44,7 @@ class ProductRepository {
     try {
       return await ProductModel.findById(id);
     } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Product"
-      );
+      throw new APIError("unable to fetch product details");
     }
   }
 
@@ -65,11 +53,7 @@ class ProductRepository {
       const products = await ProductModel.find({ type: category });
       return products;
     } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Category"
-      );
+      throw new APIError("unable to fetch products by category");
     }
   }
 
@@ -81,11 +65,7 @@ class ProductRepository {
         .exec();
       return products;
     } catch (err) {
-      throw new APIError(
-        "API Error",
-        STATUS_CODES.INTERNAL_ERROR,
-        "Unable to Find Product"
-      );
+      throw new APIError("unable to fetch selected products");
     }
   }
 }
