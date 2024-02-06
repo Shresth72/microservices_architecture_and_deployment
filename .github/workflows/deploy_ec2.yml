@@ -7,7 +7,7 @@ on:
   # Since, no connection is setup yet, don't automate the process and use manual dispatch
   # push:
   #   branches: [ "main" ]
-  workflow_dispatch:
+  workflow_dispatch: 
 
 jobs:
   build:
