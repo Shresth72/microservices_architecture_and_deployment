@@ -194,4 +194,7 @@ location / {
 
 **Setting up workflows to automate this whole process**
 -
-- 
+- Setup a self-hosted workflow for deploying to ec2 on a node.js run environment
+- Setup a new self-hosted runner for GitHub Actions
+  - Choose Linux
+  - And run all the commands in the runner on the ec2 console.
