@@ -22,7 +22,11 @@
 **Continuous Deployment Setup**
 -
 - Set new branch rules
-- Setup workflow for Continuous Deployment Setup complete for running all tests
+- Setup workflows for Continuous Deployment Setup complete for running all tests
+  - Pull Request enabled
+  - Node.js environment and actions
+  - Configure all service directories
+  - Install dependencies and run tests
 
 <img src="process_diagrams\cicd.png" alt="drawing" style="width:800px;"/>
 
