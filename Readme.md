@@ -2,45 +2,30 @@
 
 **Initial Implementation**
 -
-- Multiple services that communicate through message broker (Apache Kafka / RabbitMQ)
-- Nginx to act as reverse proxy for managing request APIs from client
-- Docker Images for database, services and reverse proxy to make it easily deployable on cloud
+
+- Multiple services that communicate through message broker. (Apache Kafka / RabbitMQ)
+- Nginx to act as reverse proxy for managing request APIs for each service.
+- Containerized services and database via Docker for easy deployment on Elastic Beanstalk. (Working on GCE)
+- Continuous Deployment environment using GitHub workflows for testing and production.
+- Scaling services using EC2 and Nginx, for multiple instances and load balancing.
+
+## Microservice Architecture
+<img src="process_diagrams\micrservice_arch.png" alt="drawing" style="width:600px;"/>
+
+## Communication within services
+<img src="process_diagrams\message_broker_communication.png" alt="drawing" style="width:600px;"/>
 
 <br/><br/>
+
+# Project Documentation
 
 **Continuous Deployment Setup**
 -
 - Set new branch rules
 - Setup workflow for Continuous Deployment Setup complete for running all tests
-```yml
-name: Continuous Integration
 
-on:
-pull_request:
-branches: [ "main" ]
+<img src="process_diagrams\cicd.png" alt="drawing" style="width:800px;"/>
 
-jobs:
-CI_verification:
-
-runs-on: ubuntu-latest
-
-strategy:
-matrix:
-    node-version: [14.x]
-
-steps:
-- uses: actions/checkout@v3
-- name: Use Node.js ${{ matrix.node-version }}
-uses: actions/setup-node@v3
-with:
-    node-version: ${{ matrix.node-version }}
-
-- name: Test Customer Service
-working-directory: ./customer
-run: |
-    npm ci
-    npm test
-```
 - Setup workflow for the QA environment for live testing
 - Finally setup workflow for the main Production environment with setting up .env files, and the .zip for cloud upload.
 
@@ -85,7 +70,9 @@ run: |
 - Optimizing services for scalability
 - Refactoring codebase and keeping meaningful data close to the services
 - Revoke redundant data from services / DB
-- Isolate DB instance with special access to perform DBA operations
+<!-- - Isolate DB instance with special access to perform DBA operations -->
+
+<img src="process_diagrams\rpc_communication.png" alt="drawing" style="width:600px;"/>
 
 <br/>
 
@@ -129,7 +116,7 @@ run: |
 - Firstly, working with the customer service, we create a docker image of the service and expose it to port 8001.
 - A Nginx image uses this port to handle the request from customer service and can be used directly as a container.
 
-<img src="project-documentation\images\reverseproxy.png" alt="drawing" style="width:600px;"/>
+<img src="process_diagrams\reverseproxy.png" alt="drawing" style="width:600px;"/>
 
 - Since, nginx is managing all requests for customer service acts as its host. We can simply spin up multiple instance of customer service and the nginx will manage the requests along with load balancing as a reverse proxy.
 - We can also change the workflow to use docker instead of pm2 for scaling up customer service.
