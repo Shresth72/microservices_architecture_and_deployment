@@ -9,5 +9,6 @@ customer/node_modules
 /shopping/.env
 /shopping/app_error.log
 /shopping/package-lock.json
-/rust
 /customer/rpc_example
+
+.env
