@@ -25,7 +25,7 @@ jobs:
         working-directory: ./customer
         run: | # npm ci needs lock files
           npm ci 
-          npm test
+          npm test 
 
       - name: Test Products Service
         working-directory: ./products

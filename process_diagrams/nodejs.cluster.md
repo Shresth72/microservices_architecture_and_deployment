@@ -20,6 +20,7 @@
     - Connect to the instance using its Public DNS. For e.g. ```ec2-52-58-237-8.eu-central-1.compute.amazonaws.com```
   
 - Run this SSH command to connect
+
 ```bash
 ssh -i "key" "public DNS"
 ```
@@ -30,11 +31,13 @@ ssh -i "key" "public DNS"
 - Install node and git on the instance
 
 - Now generate SSH key pair to connect it the GitHub repo using :
+
 ```bash
 ssh-keygen -t rsa -C "email" -b 4096
 ```
 
 - The private and public key are saved in your instance. Grab the public key using : 
+  
 ```bash
 cat ~/.ssh/id_rsa.pub
 ```
